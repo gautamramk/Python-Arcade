@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "Game.py", line 260, in <module>
+  File "Game.py", line 254, in main
+pygame.error: video system not initialized
