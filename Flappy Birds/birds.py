@@ -108,11 +108,11 @@ def loop():
                 walllist[1] = walllist[2]
                 walllist[2] = random.randint(100, 150)
                 score += 1
-                print score
+                print(score)
         else:
             currenttime = time.time()
-    print ypos
-    print walllist[1]
+    print(ypos)
+    print(walllist[1])
     q = False
     c = 0
     t = time.time()
@@ -127,7 +127,7 @@ def loop():
 
             k = pygame.key.get_pressed()
             if k[K_RETURN]:
-                print "True"
+                print("True")
                 q = True
         pygame.event.pump()
     return None

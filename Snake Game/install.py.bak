@@ -189,4 +189,4 @@ if __name__ == "__main__":
         sys.argv.append("py2exe")
     BuildExe().run()  # Run generation
     # Pause to let user see that things ends
-    input("Press any key to continue")
+    raw_input("Press any key to continue")

@@ -139,7 +139,7 @@ def update(gamemode):
     global gameon
     keystate = pygame.key.get_pressed()
     if keystate[K_ESCAPE]:
-        print "yes"
+        print("yes")
         return False
     if gameon:
         for i in range(len(snake) - 1, -1, -1):
@@ -153,7 +153,7 @@ def update(gamemode):
             foody = randint(1, 38) * 16
             score += 1
             if snake[len(snake) - 1].direc == -1:
-                print "eat"
+                print("eat")
                 snake.append(
                     snake_part.snakepart(
                         snake[len(snake) - 1].x,
@@ -165,7 +165,7 @@ def update(gamemode):
                     )
                 )
             elif snake[len(snake) - 1].direc == 1:
-                print "eat"
+                print("eat")
                 snake.append(
                     snake_part.snakepart(
                         snake[len(snake) - 1].x,
@@ -177,7 +177,7 @@ def update(gamemode):
                     )
                 )
             elif snake[len(snake) - 1].direc == -2:
-                print "eat"
+                print("eat")
                 snake.append(
                     snake_part.snakepart(
                         snake[len(snake) - 1].x + 16,
@@ -189,7 +189,7 @@ def update(gamemode):
                     )
                 )
             elif snake[len(snake) - 1].direc == -1:
-                print "eat"
+                print("eat")
                 snake.append(
                     snake_part.snakepart(
                         snake[len(snake) - 1].x - 16,
@@ -203,7 +203,7 @@ def update(gamemode):
         for i in range(1, len(snake) - 1):
             if snake[0].x == snake[i].x and snake[0].y == snake[i].y:
                 gameon = False
-                print "oops"
+                print("oops")
                 gameendscreen()
                 return False
         if gamemode == 1:
@@ -214,7 +214,7 @@ def update(gamemode):
                 or snake[0].y > 39 * 16
             ):
                 gameon = False
-                print "oops"
+                print("oops")
                 gameendscreen()
                 return False
 

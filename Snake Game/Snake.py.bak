@@ -5,7 +5,6 @@ import Menu
 import os
 import time
 from random import randint
-import sys
 
 
 def init():
@@ -112,7 +111,7 @@ def load():
 
     imagehead = pygame.image.load(os.path.join("sprites", "head.bmp"))
     imagebody = pygame.image.load(os.path.join("sprites", "snake.bmp"))
-    wall = pygame.image.load(os.path.join("sprites", "walls.bmp"))
+    wall = pygame.image.load(os.path.join("sprites", "wall.bmp"))
     foodimg = pygame.image.load(os.path.join("sprites", "food.bmp"))
     head = snake_part.snakepart(320, 320, screen, imagehead, True, -1)
     snake.append(head)
@@ -140,8 +139,8 @@ def update(gamemode):
     global gameon
     keystate = pygame.key.get_pressed()
     if keystate[K_ESCAPE]:
-        print("yes")
-        return (False, score)
+        print "yes"
+        return False
     if gameon:
         for i in range(len(snake) - 1, -1, -1):
             if not snake[i].head:
@@ -154,7 +153,7 @@ def update(gamemode):
             foody = randint(1, 38) * 16
             score += 1
             if snake[len(snake) - 1].direc == -1:
-                print("eat")
+                print "eat"
                 snake.append(
                     snake_part.snakepart(
                         snake[len(snake) - 1].x,
@@ -166,7 +165,7 @@ def update(gamemode):
                     )
                 )
             elif snake[len(snake) - 1].direc == 1:
-                print("eat")
+                print "eat"
                 snake.append(
                     snake_part.snakepart(
                         snake[len(snake) - 1].x,
@@ -178,7 +177,7 @@ def update(gamemode):
                     )
                 )
             elif snake[len(snake) - 1].direc == -2:
-                print("eat")
+                print "eat"
                 snake.append(
                     snake_part.snakepart(
                         snake[len(snake) - 1].x + 16,
@@ -190,7 +189,7 @@ def update(gamemode):
                     )
                 )
             elif snake[len(snake) - 1].direc == -1:
-                print("eat")
+                print "eat"
                 snake.append(
                     snake_part.snakepart(
                         snake[len(snake) - 1].x - 16,
@@ -204,9 +203,9 @@ def update(gamemode):
         for i in range(1, len(snake) - 1):
             if snake[0].x == snake[i].x and snake[0].y == snake[i].y:
                 gameon = False
-                print("oops")
+                print "oops"
                 gameendscreen()
-                return (False, score)
+                return False
         if gamemode == 1:
             if (
                 snake[0].x == 0
@@ -215,17 +214,17 @@ def update(gamemode):
                 or snake[0].y > 39 * 16
             ):
                 gameon = False
-                print("oops")
+                print "oops"
                 gameendscreen()
-                return (False, score)
+                return False
 
     for q in pygame.event.get():
         if q.type == pygame.QUIT:
             pygame.quit()
-            sys.exit()
+            return False
 
     pygame.event.pump()
-    return (True, score)
+    return True
 
 
 def draw(gamemode):
@@ -253,10 +252,8 @@ def draw(gamemode):
     pygame.event.pump()
 
 
-def gamestart(gamemode, scr):
+def gamestart(gamemode):
     global gameon
-    global screen
-    screen = scr
     init()
     running = True
     load()
@@ -269,13 +266,46 @@ def gamestart(gamemode, scr):
         if (currenttime - prevtime) > (1.0 / fps) or firstloop:
             prevtime = currenttime
             firstloop = False
-            ret = update(gamemode)
-            running = ret[0]
-            score = ret[1]
+            running = update(gamemode)
             if not running:
                 break
             draw(gamemode)
 
         else:
             currenttime = time.time()
-    return ret[1]
+
+
+def main():
+    global gameon
+    global screen
+    global mainmenu
+    global k_prev
+    running = True
+    loadscreen()
+    skip = 0
+    while running:
+
+        screen.fill((128, 128, 128))
+        keystate = pygame.key.get_pressed()
+        font = pygame.font.Font("freesansbold.ttf", 72)
+        instfont = pygame.font.Font("freesansbold.ttf", 24)
+        titleimg = font.render("Snake", 1, (0, 0, 0))
+        inst = instfont.render(
+            "Use wasd for movement and enter to select option.", 1, (0, 0, 0)
+        )
+        screen.blit(titleimg, (220, 100))
+        screen.blit(inst, (0, 500))
+        mainmenu.update(keystate, k_prev)
+        mainmenu.draw()
+        if keystate[K_RETURN] and k_prev[K_RETURN] == False:
+            gamestart(mainmenu.getitem())
+        for q in pygame.event.get():
+            if q.type == pygame.QUIT:
+                pygame.quit()
+                running = False
+        pygame.display.flip()
+        pygame.event.pump()
+        k_prev = keystate
+
+
+main()

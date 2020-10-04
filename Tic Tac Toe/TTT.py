@@ -113,11 +113,11 @@ def compthink(board, comp):
 
             if trialboard[i][j] == 0:
                 trialboard[i][j] = comp
-                print "tryin"
+                print("tryin")
                 c = gameover(trialboard)
-                print trialboard
+                print(trialboard)
                 if c[0] and c[1] == comp:
-                    print "win"
+                    print("win")
                     return 3 * i + j
     for i in range(3):
         for j in range(3):
@@ -129,7 +129,7 @@ def compthink(board, comp):
                 trialboard[i][j] = -comp
                 c = gameover(trialboard)
                 if c[0] and c[1] == -comp:
-                    print "block"
+                    print("block")
                     return 3 * i + j
     counter = 0
     for i in range(3):
@@ -137,12 +137,12 @@ def compthink(board, comp):
             if board[i][j] == 0:
                 counter += 1
     rplace = random.randint(0, counter - 1)
-    print rplace
+    print(rplace)
     counter = 0
     for i in range(9):
         if board[i / 3][i % 3] == 0:
             if counter == rplace:
-                print "play"
+                print("play")
                 return i
             else:
                 counter += 1
@@ -222,10 +222,10 @@ def playcomp():
                     board[curpos / 3][curpos % 3] = 1
                 c = gameover(board)
                 if c[0] and c[1] == -comp:
-                    print "You win"
+                    print("You win")
                     running = False
                 elif c[0] and c[1] == 0:
-                    print "Draw"
+                    print("Draw")
                     running = False
                 else:
                     cplay = compthink(board, comp)
@@ -242,15 +242,15 @@ def playcomp():
             c = gameover(board)
             if c[0]:
                 if c[1] == comp:
-                    print "Computer wins."
+                    print("Computer wins.")
                     running = False
                     winner = comp
                 elif c[1] == -comp:
-                    print "You win."
+                    print("You win.")
                     winner = -comp
                     running = False
                 elif c[1] == 0:
-                    print "Draw"
+                    print("Draw")
                     running = False
                     winner = 0
 
@@ -280,7 +280,7 @@ def playcomp():
 
             k = pygame.key.get_pressed()
             if k[K_RETURN]:
-                print "True"
+                print("True")
                 q = True
         pygame.event.pump()
 

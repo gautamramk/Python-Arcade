@@ -100,12 +100,12 @@ def highscores(sc, mode):
     elif mode == 2:
         hf = open("birds.dat", "rb")
     top = list(pickle.load(hf))
-    print(top)
+    print top
     check = False
     for i in top:
         if sc > i[1]:
             check = True
-            print("yes")
+            print "yes"
     hf.close()
 
     if check:
@@ -189,7 +189,7 @@ def highscorescr(screen):
                 sys.exit()
         pygame.display.flip()
         pygame.event.pump()
-    print("Done")
+    print "Done"
 
 
 def initialize():

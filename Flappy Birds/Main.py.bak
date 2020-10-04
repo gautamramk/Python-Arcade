@@ -72,11 +72,11 @@ def loop():
                 walllist[1] = walllist[2]
                 walllist[2] = random.randint(100, 150)
                 score += 1
-                print(score)
+                print score
         else:
             currenttime = time.time()
-    print(ypos)
-    print(walllist[1])
+    print ypos
+    print walllist[1]
     while True:
         continue
 

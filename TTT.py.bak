@@ -4,13 +4,14 @@ from pygame.locals import *
 import time
 import Menu
 import random
+import sys
 
 screen = None
 naughtpic = None
 crosspic = None
 boardpic = None
 highlight = None
-keys = []
+keys = None
 
 
 def gameover(board):
@@ -75,7 +76,6 @@ def gameover(board):
 
 
 def initialize():
-    pygame.init()
     global boardpic
     global naughtpic
     global crosspic
@@ -85,9 +85,6 @@ def initialize():
     naughtpic = pygame.image.load(os.path.join("Sprites", "Naught.png"))
     crosspic = pygame.image.load(os.path.join("Sprites", "Cross.png"))
     highlight = pygame.image.load(os.path.join("Sprites", "Highlight.png"))
-    pygame.display.init()
-    pygame.display.set_caption("Tic Tac Toe")
-    screen = pygame.display.set_mode((640, 640))
     pygame.display.flip()
     pygame.event.pump()
 
@@ -113,11 +110,11 @@ def compthink(board, comp):
 
             if trialboard[i][j] == 0:
                 trialboard[i][j] = comp
-                print("tryin")
+                print "tryin"
                 c = gameover(trialboard)
-                print(trialboard)
+                print trialboard
                 if c[0] and c[1] == comp:
-                    print("win")
+                    print "win"
                     return 3 * i + j
     for i in range(3):
         for j in range(3):
@@ -129,7 +126,7 @@ def compthink(board, comp):
                 trialboard[i][j] = -comp
                 c = gameover(trialboard)
                 if c[0] and c[1] == -comp:
-                    print("block")
+                    print "block"
                     return 3 * i + j
     counter = 0
     for i in range(3):
@@ -137,19 +134,19 @@ def compthink(board, comp):
             if board[i][j] == 0:
                 counter += 1
     rplace = random.randint(0, counter - 1)
-    print(rplace)
+    print rplace
     counter = 0
     for i in range(9):
         if board[i / 3][i % 3] == 0:
             if counter == rplace:
-                print("play")
+                print "play"
                 return i
             else:
                 counter += 1
 
 
 def playcomp():
-    keys[1] = keys[0]
+
     global keys
     global screen
     global boardpic
@@ -187,6 +184,7 @@ def playcomp():
         for q in pygame.event.get():
             if q.type == pygame.QUIT:
                 pygame.quit()
+                sys.exit()
         times[0] = time.time()
 
     board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
@@ -222,10 +220,10 @@ def playcomp():
                     board[curpos / 3][curpos % 3] = 1
                 c = gameover(board)
                 if c[0] and c[1] == -comp:
-                    print("You win")
+                    print "You win"
                     running = False
                 elif c[0] and c[1] == 0:
-                    print("Draw")
+                    print "Draw"
                     running = False
                 else:
                     cplay = compthink(board, comp)
@@ -242,66 +240,54 @@ def playcomp():
             c = gameover(board)
             if c[0]:
                 if c[1] == comp:
-                    print("Computer wins.")
+                    print "Computer wins."
                     running = False
+                    winner = comp
                 elif c[1] == -comp:
-                    print("You win.")
+                    print "You win."
+                    winner = -comp
                     running = False
                 elif c[1] == 0:
-                    print("Draw")
+                    print "Draw"
                     running = False
+                    winner = 0
 
             pygame.display.flip()
             pygame.event.pump()
             keys[1] = keys[0]
-        for q in pygame.event.get():
-            if q.type == pygame.QUIT:
-                pygame.quit()
+            for q in pygame.event.get():
+                if q.type == pygame.QUIT:
+                    pygame.quit()
         times[0] = time.time()
+    q = False
+    c = 0
+    t = time.time()
+    screen.fill((128, 128, 128))
+    font = pygame.font.Font(None, 60)
+    if winner == comp:
+        txt = font.render("Computer Wins", 1, (0, 0, 0))
+    elif winner == -comp:
+        txt = font.render("Player Wins", 1, (0, 0, 0))
+    else:
+        txt = font.render("Draw", 1, (0, 0, 0))
+    screen.blit(txt, (50, 50))
+    pygame.display.flip()
+    pygame.event.pump()
+    while q == False:
+        if time.time() - t > 1.0:
+
+            k = pygame.key.get_pressed()
+            if k[K_RETURN]:
+                print "True"
+                q = True
+        pygame.event.pump()
 
 
-def gamestart(mode):
+def gamestart(mode, scr, ks):
     global keys
     global screen
+    initialize()
+    screen = scr
+    keys = [ks, ks]
     if mode == 0:
         playcomp()
-
-
-def main():
-    global screen
-    global keys
-    initialize()
-    running = True
-    firstloop = True
-    gamechoice = Menu.menulist(
-        100, 400, [
-            "Play Against Computer", "Play Against Human"], 48, 48, screen)
-    times = []
-    keys = []
-    keys.append(None)
-    keys.append(None)
-    times.append(time.time())
-    times.append(time.time())
-    fps = 60
-    while running:
-        if times[0] - times[1] >= (1.0 / fps) or firstloop:
-            times[1] = times[0]
-            keys[0] = pygame.key.get_pressed()
-
-            firstloop = False
-            screen.fill((128, 128, 128))
-            gamechoice.update(keys[0], keys[1])
-            gamechoice.draw()
-            if keys[0][K_RETURN] and keys[1][K_RETURN] == False:
-                gamestart(gamechoice.getitem())
-            keys[1] = keys[0]
-            pygame.display.flip()
-            pygame.event.pump()
-        for q in pygame.event.get():
-            if q.type == pygame.QUIT:
-                pygame.quit()
-                running = False
-        times[0] = time.time()
-
-
-main()
