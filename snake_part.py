@@ -1,7 +1,8 @@
 import pygame
 from pygame.locals import *
 
-class snakepart():
+
+class snakepart:
     x = None
     y = None
     screen = None
@@ -9,7 +10,7 @@ class snakepart():
     head = None
     direc = None
 
-    def __init__(self,xloc, yloc, s, i,h,d):
+    def __init__(self, xloc, yloc, s, i, h, d):
         self.x = xloc
         self.y = yloc
         self.screen = s
@@ -18,9 +19,9 @@ class snakepart():
         self.direc = d
 
     def render(self):
-        self.screen.blit(self.img,(self.x,self.y))
+        self.screen.blit(self.img, (self.x, self.y))
 
-    def update(self,k):
+    def update(self, k):
         if not self.head:
             self.direc = k
         elif self.head:
@@ -36,7 +37,7 @@ class snakepart():
         if self.direc == 1 or self.direc == -1:
             self.y += (self.direc) * 16
         else:
-            self.x += (self.direc/2) * 16
+            self.x += (self.direc / 2) * 16
 
         if self.x < 0:
             self.x = 624
@@ -46,9 +47,3 @@ class snakepart():
             self.y = 624
         elif self.y > 640:
             self.y = 16
-            
-
-            
-            
-        
-        
